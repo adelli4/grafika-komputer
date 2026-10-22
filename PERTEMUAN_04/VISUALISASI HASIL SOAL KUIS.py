@@ -22,28 +22,43 @@ def dda_line(x1, y1, x2, y2):
 # Bresenham
 def bresenham_line(x1, y1, x2, y2):
     pixels = []
+
     dx = abs(x2 - x1)
     dy = abs(y2 - y1)
+
     sx = 1 if x1 < x2 else -1
     sy = 1 if y1 < y2 else -1
-    err = dx - dy
+
     x, y = x1, y1
 
-    while True:
-        pixels.append((x, y))
+    # menentukan arah pergerakan utama
+    if dx >= dy:
+        p = 2 * dy - dx
 
-        if x == x2 and y == y2:
-            break
+        while x != x2:
+            pixels.append((x, y))
 
-        e2 = 2 * err
+            if p >= 0:
+                y += sy
+                p -= 2 * dx
 
-        if e2 > -dy:
-            err -= dy
             x += sx
+            p += 2 * dy
 
-        if e2 < dx:
-            err += dx
+    else:
+        p = 2 * dx - dy
+
+        while y != y2:
+            pixels.append((x, y))
+
+            if p >= 0:
+                x += sx
+                p -= 2 * dy
+
             y += sy
+            p += 2 * dx
+
+    pixels.append((x2, y2))
 
     return pixels
 
@@ -110,3 +125,4 @@ plt.legend()
 plt.axis('equal')
 plt.tight_layout()
 plt.show()
+
